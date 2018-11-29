@@ -2,6 +2,7 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 function! wtfs#diff() range abort
+  echo 'Fetching diff...'
   let csfirst = s:get_changeset(a:firstline)
   let cslast  = s:get_changeset(a:lastline)
   if a:firstline == a:lastline
@@ -24,6 +25,8 @@ endfunction
 function! wtfs#difflatest() abort
   let changeset = s:get_changeset(line('.'))
   let filename = w:filename
+  let title = fnamemodify(filename, ':t') . ':C' . changeset
+  echo 'Fetching' title 'to diff with latest...'
   let ft = w:ft
   wincmd p
   leftabove vnew
@@ -48,8 +51,10 @@ endfunction
 function! wtfs#view() abort
   let changeset = s:get_changeset(line('.'))
   let filename = w:filename
+  let title = fnamemodify(filename, ':t') . ':C' . changeset
+  echo 'Fetching' title . '...'
   let ft = w:ft
-  call s:tabnew(fnamemodify(filename, ':t') . ':C' . changeset)
+  call s:tabnew(title)
   call s:view(filename, ft, changeset)
 endfunction
 
