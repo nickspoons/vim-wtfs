@@ -1,7 +1,7 @@
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe')
 
 nnoremap <buffer> <CR> :call wtfs#view()<CR>
 nnoremap <buffer> d :call wtfs#difflatest()<CR>

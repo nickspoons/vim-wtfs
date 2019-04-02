@@ -40,7 +40,7 @@ function! wtfs#history() abort
   let filename = fnameescape(expand('%:.'))
   echo 'Fetching tfs history...'
   let ft = &filetype
-  let cmd = 'tf history /format:brief ' . filename
+  let cmd = 'TF.exe vc history /format:brief ' . filename
   " TODO: use a job
   let output = system(cmd)
   " Split the string into an array, and strip the first 2 header lines
@@ -61,7 +61,7 @@ endfunction
 function! s:view(filename, ft, changeset) abort
   setlocal nobuflisted buftype=nofile bufhidden=wipe noswapfile
   let &filetype = a:ft
-  execute 'silent read !tf vc view /version:C' . a:changeset a:filename
+  execute 'silent read !TF.exe vc view /version:C' . a:changeset a:filename
   execute 'silent file' a:filename . ':C' . a:changeset
   0delete_
 endfunction
