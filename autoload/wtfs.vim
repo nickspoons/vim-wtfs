@@ -48,6 +48,29 @@ function! wtfs#history() abort
   call s:wtfslist_open(output, filename, ft)
 endfunction
 
+function! wtfs#status() abort
+  echo 'Fetching tfs status...'
+  let cmd = 'TF.exe vc status'
+  " TODO: use a job
+  let output = system(cmd)
+  " Split the string into an array, and remove all that don't match the pattern:
+  " filename        <action>    fullpath
+  let pattern = '^\S\+\s\+\(add\|edit\|delete\)\s\+\([^[:space:]]\+\)\r\?$'
+  let locations = split(output, "\n")
+  \ ->map({_,l -> matchlist(l, pattern)})
+  \ ->filter({_,ml -> len(ml)})
+  \ ->map({_,ml -> #{filename: ml[2], text: ml[1], valid:1}})
+  if get(g:, 'wtfs_translate_wsl', 0)
+    for loc in locations
+      let loc.filename = system(printf('wslpath "%s"', loc.filename))->trim()
+    endfor
+  endif
+  call setqflist([], ' ', #{nr: '$', items: locations, title: 'TF Status'})
+  if get(g:, 'wtfs_open_quickfix', 1)
+    cwindow
+  endif
+endfunction
+
 function! wtfs#view() abort
   let changeset = s:get_changeset(line('.'))
   let filename = w:filename
