@@ -12,7 +12,7 @@ The resulting window contains a line for each changeset version of the file. Eac
 
 `d` can be used to diff a changeset with the current buffer version. `d` when a visual selection spans multiple lines creates a diff between the first and last versions of the selection, in a new tab.
 
-Close the history window with `q`, or using `:pclose`.
+Close the history window with `gq`, or using `:pclose`.
 
 ### `:TFStatus`
 
